@@ -22,10 +22,10 @@ cloud_logging_client.setup_logging()
 
 # Agents
 
-attractions_planner = Agent(
-    name="attractions_planner",
+data_agent = Agent(
+    name="data_agent",
     model=os.getenv("MODEL"),
-    description="Build a list of attractions to visit in a country.",
+    description="Finds and queries public education datasets",
     instruction="""
         - Provide the user options for attractions to visit within their selected country.
         """,
@@ -35,10 +35,10 @@ attractions_planner = Agent(
 
     )
 
-travel_brainstormer = Agent(
-    name="travel_brainstormer",
+insights_agent = Agent(
+    name="insights_agent",
     model=os.getenv("MODEL"),
-    description="Help a user decide what country to visit.",
+    description="Analyzes user needs and the data and provides suggestions",
     instruction="""
         Provide a few suggestions of popular countries for travelers.
         
@@ -55,15 +55,13 @@ travel_brainstormer = Agent(
 root_agent = Agent(
     name="steering",
     model=os.getenv("MODEL"),
-    description="Start a user on a travel adventure.",
+    description="Start an education planner.",
     instruction="""
-        Ask the user if they know where they'd like to travel
-        or if they need some help deciding.
-        If they need help deciding, send them to 'travel_brainstormer'.
-        If they know what country they'd like to visit, send them to the 'attractions_planner'.
+        You are a  conversational agent that empowers parents, educators, and public officials to identify needs, compare resources, and prioritize interventions that directly address educational gaps and needs.
+        Ask the user what are important criteria for them in selecting schools.
         """,
     generate_content_config=types.GenerateContentConfig(
         temperature=0,
     ),
-    sub_agents=[travel_brainstormer, attractions_planner]
+    # sub_agents=[travel_brainstormer, attractions_planner]
 )
