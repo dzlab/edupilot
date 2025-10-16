@@ -14,3 +14,9 @@ Example conversation:
 [travel_brainstormer]: No problem at all! I can definitely help you with that. To get started, could you tell me a little bit about what you're hoping to get out of your trip? Are you looking for adventure, relaxation and leisure, a chance to learn something new, a great shopping experience, or an opportunity to view art and culture?
 [user]: exit
 ```
+
+or
+
+```
+adk web
+```

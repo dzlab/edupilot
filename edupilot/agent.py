@@ -12,6 +12,8 @@ from typing import Optional, List, Dict
 
 from google.adk.tools.tool_context import ToolContext
 
+from src.bigquery_utils import bigquery_toolset
+
 load_dotenv()
 
 cloud_logging_client = google.cloud.logging.Client()
@@ -52,6 +54,18 @@ insights_agent = Agent(
     after_model_callback=log_model_response,
 )
 
+bigquery_agent = Agent(
+   model="gemini-2.0-flash",
+   name="bigquery_agent",
+   description=(
+       "Agent that answers questions about BigQuery data by executing SQL queries"
+   ),
+   instruction=""" You are a data analysis agent with access to several BigQuery tools. Make use of those tools to answer the user's questions.
+
+   """,
+   tools=[bigquery_toolset],
+)
+
 root_agent = Agent(
     name="steering",
     model=os.getenv("MODEL"),
@@ -59,9 +73,10 @@ root_agent = Agent(
     instruction="""
         You are a  conversational agent that empowers parents, educators, and public officials to identify needs, compare resources, and prioritize interventions that directly address educational gaps and needs.
         Ask the user what are important criteria for them in selecting schools.
+        If they need query data about BigQuery, send them to the 'bigquery_agent'.
         """,
     generate_content_config=types.GenerateContentConfig(
         temperature=0,
     ),
-    # sub_agents=[travel_brainstormer, attractions_planner]
+    sub_agents=[bigquery_agent]
 )
