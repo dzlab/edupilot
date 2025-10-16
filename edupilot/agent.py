@@ -12,9 +12,20 @@ from typing import Optional, List, Dict
 
 from google.adk.tools.tool_context import ToolContext
 
-from edupilot.bigquery_utils import bigquery_toolset
+from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, \
+                    StdioServerParameters, StdioConnectionParams
 
+from edupilot.bigquery_utils import bigquery_toolset
+from edupilot.maps_utils import maps_toolset
+
+# Load environment variables and initialize Vertex AI
 load_dotenv()
+project_id = os.environ["GOOGLE_CLOUD_PROJECT"]
+location = os.environ["GOOGLE_CLOUD_LOCATION"]
+model = os.environ["MODEL"]
+app_name = os.environ.get("APP_NAME", "Transcript Summarizer")
+bucket_name = f"gs://{project_id}-bucket"
+
 
 GOOGLE_CLOUD_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT")
 
@@ -45,6 +56,18 @@ bigquery_agent = Agent(
    tools=[bigquery_toolset],
 )
 
+maps_agent = Agent(
+   model=model,
+   name="maps_agent",
+   description=(
+       "Help the user with mapping, directions, and finding places using Google Maps tools."
+   ),
+   instruction=f"""
+   You are a travel agent with access to several Google Maps tools. Make use of those tools to answer the user's questions.
+   """,
+   tools=[maps_toolset],
+)
+
 root_agent = Agent(
     name="steering",
     model=os.getenv("MODEL"),
@@ -57,5 +80,5 @@ root_agent = Agent(
     generate_content_config=types.GenerateContentConfig(
         temperature=0,
     ),
-    sub_agents=[bigquery_agent]
+    sub_agents=[bigquery_agent, maps_agent]
 )
