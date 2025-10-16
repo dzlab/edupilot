@@ -59,6 +59,8 @@ root_agent = Agent(
     instruction="""
         Ask the user if they know where they'd like to travel
         or if they need some help deciding.
+        If they need help deciding, send them to 'travel_brainstormer'.
+        If they know what country they'd like to visit, send them to the 'attractions_planner'.
         """,
     generate_content_config=types.GenerateContentConfig(
         temperature=0,
