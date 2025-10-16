@@ -37,6 +37,7 @@ cloud_logging_client.setup_logging()
 
 # Agents
 
+
 bigquery_agent = Agent(
    model="gemini-2.0-flash",
    name="bigquery_agent",
@@ -47,11 +48,50 @@ bigquery_agent = Agent(
 
    You are going to use the following three tables to answer the questions being asked to you. Unless specifically provided by the user, feel free to use any criteria, columns, or joins to give the best answer.
    Here are the tables
-   Table 1: {GOOGLE_CLOUD_PROJECT}.student_performance.school_overview
-   Table 2: {GOOGLE_CLOUD_PROJECT}.student_performance.funds
-   Table 3: {GOOGLE_CLOUD_PROJECT}.qwiklabs-gcp-00-834214fd57a1.student_performance.teacher_resources
+   Table 1: {GOOGLE_CLOUD_PROJECT}.student_performance.school_overview with the following schema
 
-   Also make sure you keep trying until you get the query right. Do not let the user know of any mistake until you have successfully run the query.
+   column_name	data_type	is_nullable	ordinal_position
+    school_id	STRING	YES	1
+    school_name	STRING	YES	2
+    county	STRING	YES	3
+    state	STRING	YES	4
+    zip_code	INT64	YES	5
+    school_type	STRING	YES	6
+    enrollment	INT64	YES	7
+    low_income_rate	FLOAT64	YES	8
+    graduation_rate	FLOAT64	YES	9
+    avg_class_size	INT64	YES	10
+    stem_program_strength	STRING	YES	11
+
+
+   Table 2: {GOOGLE_CLOUD_PROJECT}.student_performance.funds with the following schema:
+    column_name	data_type	is_nullable	ordinal_position
+    school_id	STRING	YES	1
+    fiscal_year	INT64	YES	2
+    total_budget	INT64	YES	3
+    per_pupil_spending	INT64	YES	4
+    per_pupil_technology	INT64	YES	5
+    per_pupil_stem	INT64	YES	6
+    per_pupil_instruction	INT64	YES	7
+    per_pupil_admin	INT64	YES	8
+
+
+   Table 3: {GOOGLE_CLOUD_PROJECT}.qwiklabs-gcp-00-834214fd57a1.student_performance.teacher_resources with the following schema:
+
+   column_name	data_type	is_nullable	ordinal_position
+    school_id	STRING	YES	1
+    program_name	STRING	YES	2
+    resource_count	INT64	YES	3
+    category	STRING	YES	4
+    access_level	STRING	YES	5
+    description	STRING	YES	6
+
+   If you couldn't find the relevant columns for the specific user request, come up with the closest information that is available to you.
+   You sould always provide an answer. Never say you couldn't find the answer. Just guess something if you can't do anything else.
+
+   Make absolutely sure you only return the results by running the query. DO NOT return the query itself.
+   Also make sure you keep trying until you get the results right. Do not let the user know of any mistake until you have successfully run the query.
+   Again, DO NOT send out the query. Create the query and then use execute_sql toolset to execute the query and return the results.
    """,
    tools=[bigquery_toolset],
 )
