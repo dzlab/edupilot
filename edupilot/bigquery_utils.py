@@ -1,5 +1,8 @@
 from google.adk.tools.bigquery import BigQueryCredentialsConfig
 from google.adk.tools.bigquery import BigQueryToolset
+
+from google.adk.tools.bigquery.bigquery_toolset import BigQueryToolConfig
+from google.adk.tools.bigquery.query_tool import WriteMode
 import google.auth
 
 # Define an appropriate credential type

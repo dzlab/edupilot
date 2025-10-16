@@ -12,7 +12,7 @@ from typing import Optional, List, Dict
 
 from google.adk.tools.tool_context import ToolContext
 
-from src.bigquery_utils import bigquery_toolset
+from edupilot.bigquery_utils import bigquery_toolset
 
 load_dotenv()
 

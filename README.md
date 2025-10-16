@@ -1,5 +1,10 @@
+
+curl -O https://storage.googleapis.com/genai-toolbox/v0.7.0/linux/amd64/toolbox
+
 export PATH=$PATH:"/home/${USER}/.local/bin"
 python3 -m pip install google-adk -r requirements.txt
+
+
 
 adk run src/
 
